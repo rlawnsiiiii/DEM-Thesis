@@ -189,6 +189,23 @@ Ignoring the complicated stress distribution, the interaction forces in DEM only
 \end{figure}
 
 \chapter{Equations of Motion}
+The dynamics of granular particles can be expressed with Newton's equations, which can be reduced to a system of ordinary differential equations of translational and rotational  motion:
+\begin{equation}
+	m_i \frac{\mathrm{d}^2}{\mathrm{d}t^2} r_i = f_{contact} + f_{global}, \quad \text{and} \quad
+	I_i \frac{\mathrm{d}^2}{\mathrm{d}t^2} \varphi_i = q_{contact} + q_{global}
+\end{equation}
+with the mass $m_i$  of particle $i$ and its position $r_i$. The $f_{contact}$ can be obtained by the sum of all contact forces directed to particle $i$ as we assume existing interaction force when contact between two particles is present:
+\begin{equation}
+f_{contact} = \sum_{j \in C_{i}, i \neq j}^{} f_{ij},
+\end{equation}
+with $C_i$ being the set of all particles in contact with $i$. In case of present walls or reflective boundary conditions (BC), the forces ensuring such BC should be added into $f_{contact}$.
+The global force $f_{global}$ expresses a force that applies to all particles in a system e.g. gravity or background friction.
+
+
+
+
+
+\chapter{Time Discretization}
 \chapter{Contact Force Laws}
 
 \part{Implementation}
