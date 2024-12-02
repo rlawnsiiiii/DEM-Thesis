@@ -175,7 +175,7 @@ This thesis focuses on the application of AutoPas, a high-performance, auto-tune
 \label{sec:discrete_spherical_particle_model}
 
 The body shape of granular materials that are subjects of DEM simulations could be various. For example, sand has its specific cristal shape, which might differ from other grains such as corn or salt. 
-To simplify the modeling and implementation, we assume the spherical shape of the granular units of DEM simulations.
+To simplify the modeling and implementation, we assume the spherical shape of the granular units, in which the mass is uniformly distributed over its volumne.
 Moreover, soft and elastic unit can undergo deformations under stress. Again, for simplicity reasons, we ignore such elastic/plastic deformations and assume an unchangable spherical shape of particles.
 
 Ignoring the complicated stress distribution, the interaction forces in DEM only rely on the overlap between colliding two particles. As a consequence, the produced results below are of the same quality as the simplified modeling decision made here. 
@@ -201,8 +201,16 @@ f_{contact} = \sum_{j \in C_{i}, i \neq j}^{} f_{ij},
 with $C_i$ being the set of all particles in contact with $i$. In case of present walls or reflective boundary conditions (BC), the forces ensuring such BC should be added into $f_{contact}$.
 The global force $f_{global}$ expresses a force that applies to all particles in a system e.g. gravity or background friction.
 
+Similar applies to the equations for rotational motion: the moment of inertia $I_i$ of particle $i$, which can be reduced to the closed form solution $I_i = \frac{2}{5} m_i  r_i^2$ due to the aforementioned spherical body assumption, and its angular position $\varphi_i$. The $q_{contact}$ expresses the sum of all torques rising from its contacts with other particles:
+\begin{equation}
+	q_{contact} = \sum_{j \in C_{i}, i \neq j}^{} q_{ij},
+\end{equation}
+Such torques  can rise from a tangential force, rolling and torsion as will be discussed later.
+Similar to $f_{global}$, the global torque $q_{global}$, e.g. background friction, is subjected to all particles in the system.
 
+For a $D$-dimensional simulation, each particle has $D$ translational degrees of freedom (DF), due to the $D$-dimensional coordinate axes, and $\frac{D(D-1)}{2}$ rotational DF, due to the number of possible rotational planes e.g. $xy$, $yz$, and $xz$ planes. This results in  $D + D(D-1)/2$ ODEs for each particle, that are coupled due to the tangential force, which also affects the tangential torque.
 
+For approximating the solutions of these ODEs, numerical integrators can be applied, which will be presented next.
 
 
 \chapter{Time Discretization}
