@@ -27,14 +27,14 @@
 %\def\doctype{Guided Research\xspace}
 %\def\doctype{Interdisciplinary Project\xspace}
 \def\studyProgram{Informatics}
-\def\title{A very cool Title}
+\def\title{Implementing and benchmarking Discrete Element Method simulator using AutoPas}
 % don't try translate every technical term if it would sound off
-\def\titleGer{Ein sehr cooler Titel}
-\def\author{Your Name}
+\def\titleGer{Implementierung und Benchmarking von Discrete Element Method Simulator unter Anwendung von AutoPas}
+\def\author{Joon Kim}
 % Prof
 \def\supervisor{Univ.-Prof. Dr. Hans-Joachim Bungartz}
 % PhD Candidate
-\def\advisor{Fabio Alexander Gratl, M.Sc.}
+\def\advisor{Manish Kumar Mishra, M.Sc.}
 \def\date{Date of Submission}
 
 \begin{document}
@@ -161,8 +161,35 @@ Munich, \date \hspace{5cm} \author
 % -------------------------------------------------------------------------------
 
 \mainmatter
-\part{Introduction and Background}
+\part{Introduction}
 \chapter{Introduction}
+\label{sec:introduction}
+The Discrete Element Method (DEM) usually attempts to gain microscopic understanding by modeling macroscopic specific behaviors. By assuming contact laws from physics and the rigidity of granular bodies, it simulates the interactions of samples. 
+
+DEM has been widely used in the field of granular science due to its many advantages  when compared to a continuous modeling of granular materials: It is simple physics and provides insights into local quantities of individual granular bodies that could be out of reach in case of continuous modeling.
+
+This thesis focuses on the application of AutoPas, a high-performance, auto-tuned particle simulation library for N-body systems, building a DEM simulator and benchmarking different experimental results.
+
+\part{Background}
+\chapter{Discrete spherical particle model}
+\label{sec:discrete_spherical_particle_model}
+
+The body shape of granular materials that are subjects of DEM simulations could be various. For example, sand has its specific cristal shape, which might differ from other grains such as corn or salt. 
+To simplify the modeling and implementation, we assume the spherical shape of the granular units of DEM simulations.
+Moreover, soft and elastic unit can undergo deformations under stress. Again, for simplicity reasons, we ignore such elastic/plastic deformations and assume an unchangable spherical shape of particles.
+
+Ignoring the complicated stress distribution, the interaction forces in DEM only rely on the overlap between colliding two particles. As a consequence, the produced results below are of the same quality as the simplified modeling decision made here. 
+
+
+\chapter{Equations of Motion}
+\chapter{Contact Force Laws}
+
+\part{Implementation}
+
+\part{Benchmarking}
+
+\part{Fake Introduction and Background}
+\chapter{Fake Introduction}
 \label{sec:intro}       % labels can be put almost anywhere and can be referencef from anywhere.
 Write some useful intro. Here are tips along the way:
 
