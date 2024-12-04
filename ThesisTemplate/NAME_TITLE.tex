@@ -162,7 +162,6 @@ Munich, \date \hspace{5cm} \author
 
 \mainmatter
 \part{Introduction}
-\chapter{Introduction}
 \label{sec:introduction}
 The Discrete Element Method (DEM) usually attempts to gain microscopic understanding by modeling macroscopic specific behaviors. By assuming contact laws from physics and the rigidity of granular bodies, it simulates the interactions of samples. 
 
@@ -214,6 +213,28 @@ For approximating the solutions of these ODEs, numerical integrators can be appl
 
 
 \chapter{Time Discretization}
+Due to practical reasons, the aforementioned problem that is posed on a continuous time interval has to be transformed to a problem that is posed on discrete time steps. This brings the necessity of a numeric integrator that is applied to compute the new quantities for translational and rotational motion.
+
+\section{The Integration Method of Störmer-Verlet}
+In the context of translational motion, the task is to compute the new positions and velocities of the particles from the old positions, old velocities, and the relevant forces. From a variety of differently accurate and complex numerical integrators, the focus of our simulation lies on observing developments of macroscopic quantities e.g. Energy, Distribution of Particles and Pressure. This application makes high-order integrators such as Runge-Kutta rather unsuitable due to its bad scalability in time and memory. Instead, a second order symplectic integrator such as Velocity-Störmer-Verlet seems more promising due to its capability to capture long-time patterns well. The formulas for Störmer-Verlet is presented in the following.
+
+\begin{equation}
+	x_i(t_{n+1}) = x_i(t_n) + \Delta t \cdot v_i(t_n) + \frac{(\Delta t)^2 F_i(t_n)}{2m_i}, 
+\end{equation}
+\begin{equation}
+	v_i(t_{n+1}) = v_i(t_n) + \Delta t \cdot \frac{F_i(t_n) + F_i(t_{n+1})}{2m_i},
+\end{equation}
+with the position $x_i$, the velocity $v_i$, the mass $m_i$, and the force $F_i$ of particle $i$ and the old time step $t_n$ and the new time step $t_{n+1}$ with $\Delta t = t_{n+1} - t_n$.
+
+\section{The Integration Method of Explicit Euler}
+In the context of rotational motion, we can simplify the integration due to following reasons. Because of the assumption of the spherical particle model, the relevance of orientation, which corresponds to the position in the translational motion, disappears. Moreover, our main interest lies on observing the development of rotational motion rather than calculating accurate macroscopic quantities such as the rotational energy. This requirement allows us to use a simple first-order integrator of Explicit Euler with its computational and spacial advantages:
+
+\begin{equation}
+	w_i(t_{n+1}) = w_i(t_n) + \Delta t \cdot \frac{q_i(t_n)}{I_i},
+\end{equation}
+
+with the angular velocity $w_i$, the torque $q_i$, and the moment of Inertia $I_i$ of particle $i$.
+
 \chapter{Contact Force Laws}
 
 \part{Implementation}
