@@ -179,7 +179,7 @@ Moreover, soft and elastic unit can undergo deformations under stress. Again, fo
 
 Ignoring the complicated stress distribution, the interaction forces in DEM only rely on the overlap between colliding two particles. As a consequence, the produced results below are of the same quality as the simplified modeling decision made here. 
 
-    \begin{figure}[H] % [H] for HERE
+ \begin{figure}[H] % [H] for HERE
 	\centering
 	\includegraphics[width=.3\columnwidth]{figures/discrete_spherical_particle_model.pdf}
 	\caption[Example Figure]{Two spherical particles in contact with overlap $\delta$ \\
@@ -190,10 +190,10 @@ Ignoring the complicated stress distribution, the interaction forces in DEM only
 \chapter{Equations of Motion}
 The dynamics of granular particles can be expressed with Newton's equations, which can be reduced to a system of ordinary differential equations of translational and rotational  motion:
 \begin{equation}
-	m_i \frac{\mathrm{d}^2}{\mathrm{d}t^2} r_i = f_{contact} + f_{global}, \quad \text{and} \quad
+	m_i \frac{\mathrm{d}^2}{\mathrm{d}t^2} x_i = f_{contact} + f_{global}, \quad \text{and} \quad
 	I_i \frac{\mathrm{d}^2}{\mathrm{d}t^2} \varphi_i = q_{contact} + q_{global}
 \end{equation}
-with the mass $m_i$  of particle $i$ and its position $r_i$. The $f_{contact}$ can be obtained by the sum of all contact forces directed to particle $i$ as we assume existing interaction force when contact between two particles is present:
+with the mass $m_i$  of particle $i$ and its position $x_i$. The $f_{contact}$ can be obtained by the sum of all contact forces directed to particle $i$ as we assume existing interaction force when contact between two particles is present:
 \begin{equation}
 f_{contact} = \sum_{j \in C_{i}, i \neq j}^{} f_{ij},
 \end{equation}
@@ -241,6 +241,36 @@ The interaction force models can be divided into two main classes: normal and ta
 
 \section{Normal Contact Force Laws}
 \subsection{Linear Normal Contact Model}
+The model used for expressing the normal force between particles is the maxwell linear spring dashpot model, which consists of a spring generating a linear repulsive force and a damper realizing a dissipative viscosity.
+
+ \begin{figure}[H] % [H] for HERE
+	\centering
+	\includegraphics[width=.3\columnwidth]{figures/maxwell_spring_dashpot.pdf}
+	\caption[Example Figure]{Maxwell spring dashpot model with a damper and a spring placed in series}
+	\label{fig:maxwell_spring_dashpot} % labels always have to be placed after the caption
+\end{figure}
+
+This model becomes active only if and only if the overlap $\delta$ between two particles is positive, which can be computed as the sum of the radii of the particles subtracted by their distance:
+
+\begin{equation}
+	\delta_{ij} = (r_i + r_j) - \lVert \mathbf{x_i} -\mathbf{ x_j} \rVert_2 = \delta_{ji}
+\end{equation}
+
+with $r$ being the radius of the corresponding particle.
+As this model expresses force in the normal direction, which is parallel to the branch vector $\mathbf{l_{ji}}$ pointing from center position of particle $j$ to $i$, the unit vector $\mathbf{n_{ji}}$ in the normal direction should additionally be computed:
+
+\begin{equation}
+	\mathbf{l_{ji}} =  \mathbf{x_i} - \mathbf{x_j}, \quad \mathbf{n_{ji}} =\frac{\mathbf{l_{ij}}}{\lVert \mathbf{l_{ij}} \rVert_2}
+\end{equation}
+
+For every contact with positive overlap $\delta$, the rising normal force $f_{ji}^n$ on particle $i$ from particle $j$ can be computed by taking into account the repulsion of the spring and the dissipation of the damper (see Figure~\ref{fig:maxwell_spring_dashpot}):
+
+\begin{equation}
+	f_{ji}^n = k^n\delta - \gamma_n v_{ji}^n, \quad v_{ji}^n = \mathbf{v_{ji}} \cdot \mathbf{n_{ji}} = (\mathbf{v_i} - \mathbf{v_j}) \cdot \mathbf{n_{ji}}
+\end{equation}
+
+with the spring stiffness $k^n$, the viscous damping coefficient $\gamma_n$, and the relative velocity in normal direction $v_{ji}^n$. The negative sign of the term $-\gamma_n v_{ji}^n$ explains the damping effect, reducing the amount of force according to the damping coefficient $\gamma_n$.
+
 
 \subsection{Long Range Normal Force Model}
 
