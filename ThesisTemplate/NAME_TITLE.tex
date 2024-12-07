@@ -245,8 +245,8 @@ The model used for expressing the normal force between particles is the maxwell 
 
  \begin{figure}[H] % [H] for HERE
 	\centering
-	\includegraphics[width=.3\columnwidth]{figures/maxwell_spring_dashpot.pdf}
-	\caption[Example Figure]{Maxwell spring dashpot model with a damper and a spring placed in series}
+	\includegraphics[width=.5\columnwidth]{figures/maxwell_spring_dashpot.pdf}
+	\caption[Example Figure]{Maxwell spring dashpot model with a dashpot and a spring placed in series}
 	\label{fig:maxwell_spring_dashpot} % labels always have to be placed after the caption
 \end{figure}
 
@@ -271,6 +271,76 @@ For every contact with positive overlap $\delta$, the rising normal force $f_{ji
 
 with the spring stiffness $k^n$, the viscous damping coefficient $\gamma_n$, and the relative velocity in normal direction $v_{ji}^n$. The negative sign of the term $-\gamma_n v_{ji}^n$ explains the damping effect, reducing the amount of force according to the damping coefficient $\gamma_n$.
 
+\begin{figure}[H]
+	\centering
+	% First figure
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figures/contactForceLaws/linearNormalContactModel/simple_collision_two_particles_centered.0000.png}
+		\\ (a) Initial State % Subcaption directly
+	\end{center}
+	
+	% Second figure
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{figures/contactForceLaws/linearNormalContactModel/simple_collision_two_particles_centered.0044.png}
+		\\ (b) In Contact % Subcaption directly
+	\end{center}
+	
+	% Shared caption
+	\caption[Combined Caption]{Simple simulation of linear normal contact force with a collision of two particles $i$ (right), $j$ (left), color scaled by $\lVert f^n_{ji} \rVert$. Simulation parameters of the initial state: $r_i = r_j = 0.5$, $v^n_{ji} = 6$. (a) Initial state of the particles. (b) State of the particles in contact.}
+	\label{fig:combined_linear_normal_contact_model}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/contactForceLaws/linearNormalContactModel/Distance vs Iterationsimple_collision_two_particles_statistics_stiffness_50_viscosity_1e-2.png}
+	\end{minipage}
+	
+		\vspace{0.5cm} % Add vertical spacing between rows
+		
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/contactForceLaws/linearNormalContactModel/Overlap vs Iterationsimple_collision_two_particles_statistics_stiffness_50_viscosity_1e-2.png}
+	\end{minipage}
+	
+	\vspace{0.5cm} % Add vertical spacing between rows
+	
+	% Lower center figure
+	\begin{minipage}[t]{0.6\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/contactForceLaws/linearNormalContactModel/ForceIX vs Iterationsimple_collision_two_particles_statistics_stiffness_50_viscosity_1e-2.png}
+	\end{minipage}
+	
+	% Shared caption
+	\caption[Combined Caption]{Development of distance ($\lVert x_i - x_j \rVert_2$ ), overlap ($\delta$), and force ($f^n_{ji}$ over time in scenario described in Figure~\ref{fig:combined_linear_normal_contact_model}. Simulation parameters: $k^n$ = 50, $\gamma_n \in $ \{0.01, 0.1, 0.5, 1, 5\}, $\Delta t = 5 \cdot 10^{-5}$, number of total iterations = 20000 (a) Distance between particles $i$ and $j$ vs Iteration. (b) Overlap $\delta$ vs Iteration. (c) Linear normal force $f^n_{ji}$ vs Iteration .}
+	\label{fig:Distance_Overlap_Force_plots}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	% First figure
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{figures/contactForceLaws/linearNormalContactModel/Overlap, Relative normal velocity vs Iteration simple_collision_two_particles_statistics_stiffness_50_viscosity_1e-2viscosity_1.png}
+		\\ (a) $\gamma_n = 1$ % Subcaption directly
+	\end{center}
+	
+	% Second figure
+	\begin{center}
+		\includegraphics[width=0.6\textwidth]{figures/contactForceLaws/linearNormalContactModel/Overlap, Relative normal velocity vs Iteration simple_collision_two_particles_statistics_stiffness_50_viscosity_1e-2viscosity_5.png}
+		\\ (b) $\gamma_n = 5$
+	\end{center}
+	
+	% Shared caption
+	\caption[Combined Caption]{Development of overlap ($\delta$), (-1) $\cdot$ relative normal velocity ($v^n_{ji}$), force ($f^n_{ji}$) over time in scenario described in Figure~\ref{fig:combined_linear_normal_contact_model}.  Same parameter setting as in Figure~\ref{fig:Distance_Overlap_Force_plots}.}
+	\label{fig:Relative_Normal_Velocity_plots}
+\end{figure}
+
+
+Figure~\ref{fig:combined_linear_normal_contact_model} and Figure~\ref{fig:Distance_Overlap_Force_plots} show a simple simulation to very the effect of the linear normal contact force.  Plot (a) and (b) of Figure~\ref{fig:Distance_Overlap_Force_plots} verify the repulsive effect of the force when the overlap is positive. As a consequence, the particles $i$ and $j$ move apart from each other in the normal direction, which can be observed in all cases with varying $\gamma_n$ .  
+However, the variations in the normal viscosity coefficient $\gamma_n$ shows interesting effects. First, plot (b) suggests, cases with higher $\gamma_n$ experience lower maximum of overlap $\max(\delta)$, implying higher repulsion and deceleration. In the same context, in plot (a), cases with greater $\gamma_n$ show bigger differences between their velocities before ($v_{before}$) and after ($v_{after}$) the collision with decreasing ratio of $\frac{v_{after}}{v_{before}}$ for higher $\gamma_n$. Moreover, in plot (c), cases with high $\gamma_n \in$ \{0.5, 1, 5\} experience negative  / adhesive force at the end of their particle contacts (ca. Iteration $\in$ (12500, 13000) for $\gamma_n$ = 1). Similarly, cases with higher $\gamma_n$ show longer contact duration. This pulling force serves as a persuasive explanation for the higher deceleration effect for cases with higher $\gamma_n$.
+
+These effects arise as the term $-\gamma_n \cdot v^n_{ji}$ becomes increasingly dominant due to higher $\gamma_n$, as Figure~\ref{fig:Relative_Normal_Velocity_plots} suggests. At the point of contact where $v_i$ changes its sign due to the repulsive normal force, the sign of relative velocity $v^n_{ij}$ changes too. As the term $-v^n_{ji}$ becomes negative, this can negatively affect the force and make it from repulsive to adhesive, if it is supported with high $\gamma_n$. Plus, great $-\gamma_n \cdot v^n_{ji}$ also explains the abrupt increase of force $f^n_{ji}$ at the beginning of the contact of the particles.
 
 \subsection{Long Range Normal Force Model}
 
